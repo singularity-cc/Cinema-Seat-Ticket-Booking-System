@@ -5,11 +5,13 @@ import random
 
 
 class User:
+    """Represents a user including user_name that can buy cinema tickets"""
 
     def __init__(self, name):
         self.name = name
 
     def buy(self, seat, card):
+        """user buys is the ticket if the seat is available and card credit is enough"""
         if seat.is_free():
             if card.validate(seat.get_price()):
                 seat.occupy()
@@ -23,12 +25,15 @@ class User:
 
 
 class Seat:
+    """Represents a cinema seat that can be purchased from a user"""
+
     database = "cinema.db"
 
     def __init__(self, seat_id):
         self.seat_id = seat_id
 
     def get_price(self):
+        """get the seat ticket price"""
         connection = sqlite3.connect(self.database)
         cursor = connection.cursor()
         cursor.execute("""
@@ -37,6 +42,7 @@ class Seat:
         return cursor.fetchall()[0][0]
 
     def is_free(self):
+        """check if the seat is free or not"""
         connection = sqlite3.connect(self.database)
         cursor = connection.cursor()
         cursor.execute("""
@@ -50,6 +56,7 @@ class Seat:
             return False
 
     def occupy(self):
+        """updates that the seat is occupied"""
         connection = sqlite3.connect(self.database)
         connection.execute("""
         UPDATE "Seat" SET "occupied"=1 WHERE "seat_id"=?
@@ -58,6 +65,8 @@ class Seat:
         connection.close()
 
 class Card:
+    """Represents a card that a user holds to pay for the cinema ticket"""
+
     database = "banking.db"
 
     def __init__(self, type, number, cvc, holder):
@@ -67,6 +76,7 @@ class Card:
         self.holder = holder
 
     def validate(self, price):
+        """check if the card is valid and the balance is enough to pay for the ticket price"""
         connection = sqlite3.connect(self.database)
         cursor = connection.cursor()
         cursor.execute("""
@@ -86,6 +96,7 @@ class Card:
 
 
 class Ticket:
+    """Represents a cinema ticket including basic information """
 
     def __init__(self, user, price, seat_id):
         self.user = user
