@@ -1,0 +1,31 @@
+Title: cinmea ticket booking app
+Description: An app where users can book cinema seats if the seat is free and the user has enough balance in the card.
+The app generates a PDF ticket if the purchase is successful.
+
+Objects: User, Seat, Card, Ticket
+
+    User:
+        name
+        buy(seat, card)
+
+    Seat:
+        database
+        seat_id
+        price
+        is_free()
+        occupy()
+
+    Card:
+        database
+        type
+        number
+        cvc
+        holder
+        validate()
+
+    Ticket:
+        id
+        user
+        seat_id
+        price
+        to_pdf()
